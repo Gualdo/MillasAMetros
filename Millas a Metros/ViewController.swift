@@ -36,6 +36,9 @@ class ViewController : UIViewController
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         resultLabel.text = "Escribe la distancia a convertir"
+        
+        distanceTextField.delegate = self
+        self.hideKeyboardWhenTappingArround()
     }
 
     override func didReceiveMemoryWarning()
@@ -170,5 +173,29 @@ class ViewController : UIViewController
     func convertionDiv(fromText : String , toText : String , unit : Double)
     {
         resultLabel.text = String(format : "%.2f" , Double(distanceTextField.text!)!) + fromText + String(format : "%.2f" , Double(distanceTextField.text!)! / unit) + toText
+    }
+}
+
+extension ViewController : UITextFieldDelegate // Para cerrar el teclado dandole a la tecla return
+{
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool
+    {
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
+extension UIViewController // Para cerrar el teclado pulsando cualqueir parte de la pantalla
+{
+    func dismissKeyboard()
+    {
+        view.endEditing(true)
+    }
+    
+    func hideKeyboardWhenTappingArround()
+    {
+        let tap : UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector (UIViewController.dismissKeyboard))
+        
+        view.addGestureRecognizer(tap)
     }
 }
